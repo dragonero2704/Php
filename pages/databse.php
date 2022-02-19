@@ -55,15 +55,17 @@ if (isset($_SESSION["password"])) {
         <?php
             $conn = new mysqli($dbserver, $dbusername, $dbpassword, $dbname);
             
-            if($conn->error){
-                echo $conn->error;
-                die();
+            if($conn->connect_error){
+                die("<p>Connessione fallita!".$conn->connect_error."</p>");
             }
             $query="
             SELECT titolo
             FROM film
             ";
-            $ris = $conn->query($query);
+            $ris = $conn->query($query) or die("<p>Query fallita!".$conn->error."</p>");
+            // if($conn->error){
+            //     die($conn->error);
+            // }
             if($ris->num_rows>0){
                 while($row = $ris->fetch_assoc()){
                     echo '<div class="item">'.$row['titolo'].'</div>';
